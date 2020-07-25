@@ -2,7 +2,7 @@
    "rooms":[
       {
          "id":"1",
-         "description":"This is room one.",
+         "description":"This is room one. It's the first best room.",
          "moves": [
            {
              "n": "0",
