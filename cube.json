@@ -34,7 +34,12 @@
              "nw": "0"
            }
          ],
-         "items":"",
+         "items": [
+           {
+             "coins" : "20",
+             "sword" : "steel"
+           }
+         ],
          "event":"",
          "eventDescription":""
       },
@@ -53,7 +58,11 @@
              "nw": "0"
            }
          ],
-         "items":"",
+         "items": [
+           {
+             "wand" : "fire"
+           }
+         ],
          "event":"",
          "eventDescription":""
       },
@@ -91,7 +100,11 @@
              "nw": "0"
            }
          ],
-         "items":"",
+         "items": [
+           {
+             "sword" : "iron"
+           }
+         ],
          "event":"",
          "eventDescription":""
       }
