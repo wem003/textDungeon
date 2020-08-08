@@ -15,10 +15,13 @@ class Room:
 
     # Describe room
     def describe_room(self):
-        print("Room number :", self.roomNumber)
         print("Description :", self.description)
         print()
-        print("Items :", self.itemsDict)
+        if len(self.itemsDict)>0:
+            print("You see the following items :")
+            for key, value in self.itemsDict.items():
+                print(value, key)
+
 
     # If the item matches what the player asked for
     # return that, and pop it from the itemsDict
@@ -37,16 +40,13 @@ class Room:
     # Given a move choice, return the next room number
     # TODO refactor this - we don't need to check for valid moves again
     def get_next_room(self, moveChoice):
+        return self.movesDict[moveChoice]
 
-        nextRoomNumber = "0"
-        validMoves = ["n", "ne", "e", "se", "s", "sw", "w", "nw"]
 
-        if moveChoice in validMoves:
-            nextRoomNumber = self.movesDict[moveChoice]
-            print("Yay, new room is :", nextRoomNumber)
-
-        return nextRoomNumber
-
+    # Print a message if the player can't move that way
+    def badMoveMessage(self):
+        print("You can't go that way.... Sorry!")
+        print()
 
 
 
@@ -59,6 +59,7 @@ class Player:
     # Constructor
     def __init__(self):
         self.inventory = []
+        self.hp = 100
 
     # Add an item to the players inventory
     def add_item(self, item):
@@ -70,9 +71,44 @@ class Player:
 
     # Print players inventory
     def print_inventory(self):
-        print("Your inventory is filled with :")
-        for item in self.inventory:
-            print(item)
+        if len(self.inventory)>0:
+            print("Your inventory is filled with :")
+
+            # self.inventory is a list of dictionaries
+            for itemDict in self.inventory:
+                for key, value in itemDict.items():
+                    print(value, key)
+        else:
+            print("You aren't carrying anything.")
+        print()
+
+    # Display current status - pretty style!
+    def print_status(self):
+        print()
+        print("Player has", self.hp, "hit points...")
+        print()
+
+
+# ************************
+# Monster class
+# ************************
+class Monster:
+
+    # Constructor
+    def __init__(self, monster):
+        self.name = monster.get("name")
+        self.description = monster.get("description")
+        self.startRoom = monster.get("startRoom")
+        self.monsterHP = monster.get("monsterHP")
+        self.attack = monster.get("attack")
+        self.attackDamage = monster.get("attackDamage")
+
+    # Describe Monster
+    def describe_monster(self):
+        print("Name :", self.name)
+        print("Description :", self.description)
+        print()
+
 
 
 
@@ -86,7 +122,7 @@ def printHelp():
     print()
     print("You can enter a direction to move, like : n, ne, e, se, s, sw, w, nw")
     print("-- or --")
-    print("You can enter a command such as 'get sword'")
+    print("You can enter a command such as 'get sword' or 'i' for inventory or even 'status'...")
     print()
 
 
@@ -101,7 +137,8 @@ def exitGameMessage():
 def main():
 
     # define some game variables
-    rooms = []
+    roomsList = []
+    monstersList =[]
     player = Player()
     currentRoom = "1"
     currentRoomIndex = int(currentRoom)-1
@@ -110,23 +147,38 @@ def main():
 
     # Open our game json
     with open('cube2.json') as data_file:
-        room_data = json.load(data_file)
+        game_data = json.load(data_file)
 
     # Lets build a room object for each room in the json file
     # and add it to our rooms list.  This will make it easier later.
     #
     # For each roomDetails in the list of rooms
-    for roomDetails in room_data["rooms"]:
+    for roomDetails in game_data["rooms"]:
         currentRoom = Room(roomDetails)
-        rooms.append(currentRoom)
+        roomsList.append(currentRoom)
+
+    # Lets build a monster object for each monster in the json file
+    # and add it to our monsters list.
+    #
+    # For each roomDetails in the list of rooms
+    for monsterDetails in game_data["monsters"]:
+        currentMonster = Monster(monsterDetails)
+        monstersList.append(currentMonster)
 
     # Game loop
     while continueGame != "exit":
 
-        room = rooms[currentRoomIndex]
+        room = roomsList[currentRoomIndex]
         print("********************")
+        print()
         room.describe_room()
-        player.print_inventory()
+        for monster in monstersList:
+            if monster.startRoom == room.roomNumber:
+                print("Eeek!!! A monster!")
+                print()
+                monster.describe_monster()
+                print()
+        print()
         print("********************")
         print()
 
@@ -139,6 +191,9 @@ def main():
             if nextRoomNumber != "0":
                 currentRoomIndex = int(nextRoomNumber) - 1
                 print()
+            else:
+                room.badMoveMessage()
+
         elif len(commandList)>1:
             # we are doing
             commandVerb = commandList[0]
@@ -151,12 +206,15 @@ def main():
                     player.print_inventory()
                 else:
                     print(commandNoun, " isn't in this room.")
-
+        elif commandChoice.lower() == "h":
+            printHelp()
+        elif commandChoice.lower() == "i":
+            player.print_inventory()
+        elif commandChoice.lower() == "status":
+            player.print_status()
         elif commandChoice.lower() == "exit":
             # we are quitting
             break
-        elif commandChoice.lower() == "h":
-            printHelp()
         else:
             print("Sorry, I don't understand --> ", commandChoice)
 
