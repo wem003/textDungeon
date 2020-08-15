@@ -1,7 +1,40 @@
 import json
+import random
 from classData.room import Room
 from classData.player import Player
 from classData.monster import Monster
+from classData.item import Item
+
+# Define some global vars
+roomsList = []
+monstersList = []
+itemList = []
+
+# Game initialization
+def game_init():
+    printIntro()
+
+    roomCount = len(roomsList)
+
+    # First lets place items.  Items can go in any room
+    for item in itemList:
+        randomRoom = random.randint(0, roomCount-1)
+        currentRoom = roomsList[randomRoom]
+        currentRoom.itemsList.append(item)
+        roomsList[randomRoom] = currentRoom
+
+    # Now lets place monsters
+    for monster in monstersList:
+        # We don't want monsters in the start room, so start at index 1 instead of 0
+        randomRoom = random.randint(1, roomCount-1)
+        currentRoom = roomsList[randomRoom]
+
+        # In this game, only one monster per room
+        if currentRoom.monster is None:
+            currentRoom.monster = monster
+            roomsList[randomRoom] = currentRoom
+
+
 
 
 # Print a kick butt intro, lol
@@ -29,8 +62,6 @@ def exitGameMessage():
 def main():
 
     # define some game variables
-    roomsList = []
-    monstersList =[]
     player = Player()
     currentRoom = "1"
     currentRoomIndex = int(currentRoom)-1
@@ -52,10 +83,20 @@ def main():
     # Lets build a monster object for each monster in the json file
     # and add it to our monsters list.
     #
-    # For each roomDetails in the list of rooms
+    # For each monsterDetails in the list of rooms
     for monsterDetails in game_data["monsters"]:
         currentMonster = Monster(monsterDetails)
         monstersList.append(currentMonster)
+
+    # Lets build an item object for each item in the json file
+    # and add it to our item list.
+    #
+    # For each itemDetails in the list of rooms
+    for itemDetails in game_data["items"]:
+        currentItem = Item(itemDetails)
+        itemList.append(currentItem)
+
+    game_init()
 
     # Game loop
     while continueGame != "exit":
@@ -64,12 +105,11 @@ def main():
         print("********************")
         print()
         room.describe_room()
-        for monster in monstersList:
-            if monster.startRoom == room.roomNumber:
-                print("Eeek!!! A monster!")
-                print()
-                monster.describe_monster()
-                print()
+        if room.monster != None:
+            print("Eeek!!! A monster!")
+            print()
+            room.monster.describe_monster()
+            print()
         print()
         print("********************")
         print()

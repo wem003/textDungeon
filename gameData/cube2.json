@@ -3,10 +3,16 @@
     {
       "name": "Thom the Doofus",
       "description": "A vicious beast borne from the before times, before the new evils of the world like the Vicious Rabbit of Caerbannog",
-      "startRoom": "2",
       "monsterHP": 100,
       "attack": "Mouth Breathing!!!",
       "attackDamage": 10
+    },
+    {
+      "name": "Bob the Pudding Blob",
+      "description": "A meek, but delicious bowl of butterscotch pudding.  It has angry eyes.",
+      "monsterHP": 5,
+      "attack": "Induces drool!!!",
+      "attackDamage": 1
     }
   ],
   "items": [
@@ -50,6 +56,7 @@
         "nw": "0"
       },
       "items": "",
+      "monster": "",
       "event": "",
       "eventDescription": ""
     },
@@ -67,6 +74,7 @@
         "nw": "0"
       },
       "items": "",
+      "monster": "",
       "event": "",
       "eventDescription": ""
     },
@@ -84,6 +92,7 @@
         "nw": "0"
       },
       "items": "",
+      "monster": "",
       "event": "",
       "eventDescription": ""
     },
@@ -101,6 +110,7 @@
         "nw": "0"
       },
       "items": "",
+      "monster": "",
       "event": "",
       "eventDescription": ""
     },
@@ -118,6 +128,7 @@
         "nw": "0"
       },
       "items": "",
+      "monster": "",
       "event": "",
       "eventDescription": ""
     }
