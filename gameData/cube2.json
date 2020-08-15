@@ -9,6 +9,32 @@
       "attackDamage": 10
     }
   ],
+  "items": [
+    {
+      "name": "Coins",
+      "description": "Bag of shiny gold coins",
+      "attackDamage": 0,
+      "qty": 20
+    },
+    {
+      "name": "Wand",
+      "description": "Magic wand that shoots fire",
+      "attackDamage": 25,
+      "qty": 1
+    },
+    {
+      "name": "Steel Sword",
+      "description": "Majestic steel sword",
+      "attackDamage": 30,
+      "qty": 1
+    },
+    {
+      "name": "Iron Sword",
+      "description": "Janky iron sword",
+      "attackDamage": 10,
+      "qty": 1
+    }
+  ],
   "rooms": [
     {
       "id": "1",
@@ -40,10 +66,7 @@
         "w": "1",
         "nw": "0"
       },
-      "items": {
-        "coins": "20",
-        "sword": "steel"
-      },
+      "items": "",
       "event": "",
       "eventDescription": ""
     },
@@ -60,9 +83,7 @@
         "w": "0",
         "nw": "0"
       },
-      "items": {
-        "wand": "fire"
-      },
+      "items": "",
       "event": "",
       "eventDescription": ""
     },
@@ -96,9 +117,7 @@
         "w": "0",
         "nw": "0"
       },
-      "items": {
-        "sword": "iron"
-      },
+      "items": "",
       "event": "",
       "eventDescription": ""
     }
