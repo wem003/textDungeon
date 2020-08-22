@@ -10,6 +10,7 @@ roomsList = []
 monstersList = []
 itemList = []
 
+
 # Game initialization
 def game_init():
     printIntro()
@@ -18,23 +19,21 @@ def game_init():
 
     # First lets place items.  Items can go in any room
     for item in itemList:
-        randomRoom = random.randint(0, roomCount-1)
+        randomRoom = random.randint(0, roomCount - 1)
         currentRoom = roomsList[randomRoom]
-        currentRoom.itemsList.append(item)
+        currentRoom.place_item(item)
         roomsList[randomRoom] = currentRoom
 
     # Now lets place monsters
     for monster in monstersList:
         # We don't want monsters in the start room, so start at index 1 instead of 0
-        randomRoom = random.randint(1, roomCount-1)
+        randomRoom = random.randint(1, roomCount - 1)
         currentRoom = roomsList[randomRoom]
 
         # In this game, only one monster per room
         if currentRoom.monster is None:
-            currentRoom.monster = monster
+            currentRoom.place_monster(monster)
             roomsList[randomRoom] = currentRoom
-
-
 
 
 # Print a kick butt intro, lol
@@ -60,11 +59,10 @@ def exitGameMessage():
 
 # Main function
 def main():
-
     # define some game variables
     player = Player()
     currentRoom = "1"
-    currentRoomIndex = int(currentRoom)-1
+    currentRoomIndex = int(currentRoom) - 1
     continueGame = ""
     validMoves = ["n", "ne", "e", "se", "s", "sw", "w", "nw"]
 
@@ -126,18 +124,29 @@ def main():
             else:
                 room.badMoveMessage()
 
-        elif len(commandList)>1:
-            # we are doing
+        elif len(commandList) > 1:
+            # we are doing some action - not moving
             commandVerb = commandList[0]
-            commandNoun = commandList[1]
+            targetItem = ""
+
+            # If we have two items in the command list, its a verb and noun
+            if len(commandList) == 2:
+                targetItem = commandList[1]
+
+            # If we have 3 items in the command list, we'll assume verb, adjective, noun
+            if len(commandList) == 3:
+                targetItem = commandList[1] + ' ' + commandList[2]
 
             if commandVerb == "get":
-                newItem = room.get_item(commandNoun)
-                if len(newItem)>0:
+                newItem = room.get_item(targetItem)
+                if newItem is not None:
                     player.add_item(newItem)
                     player.print_inventory()
                 else:
-                    print(commandNoun, " isn't in this room.")
+                    print(targetItem, " isn't in this room.")
+            elif commandVerb == "equip":
+                player.equip_weapon(targetItem)
+
         elif commandChoice.lower() == "h":
             printHelp()
         elif commandChoice.lower() == "i":

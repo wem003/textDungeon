@@ -32,9 +32,12 @@ class Room:
 
         returnItem = None
 
-        if itemName in self.itemsList:
-            print("I found ", itemName)
-            returnItem = self.itemsList.pop(itemName)
+        for item in self.itemsList:
+            roomItem = item.name
+            if roomItem.lower() == itemName:
+                print("I found ", itemName)
+                returnItem = item
+                self.itemsList.remove(item)
 
         return returnItem
 
