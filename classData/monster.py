@@ -7,7 +7,7 @@ class Monster:
     def __init__(self, monster):
         self.name = monster.get("name")
         self.description = monster.get("description")
-        self.monsterHP = monster.get("monsterHP")
+        self.hp = monster.get("monsterHP")
         self.attack = monster.get("attack")
         self.attackDamage = monster.get("attackDamage")
 

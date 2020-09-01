@@ -35,6 +35,61 @@ def game_init():
             currentRoom.place_monster(monster)
             roomsList[randomRoom] = currentRoom
 
+# Return true if fighting
+def fightCheck(player):
+
+    fight = False
+    commandChoice = input("You've encountered a monster - do you want to fight? (y or n) --> ").lower()
+
+    while (commandChoice != 'y') or (commandChoice != 'n'):
+        if commandChoice == 'y':
+            fight = True
+            break
+        elif commandChoice == 'n':
+            savingRoll = random.randint(1, 10)
+            if savingRoll < 7:
+                player.print_status()
+                fight = True
+                newPlayerHP = player.hp - (player.hp * .1)
+                player.hp = int(newPlayerHP)
+                print("After saving roll fail")
+                player.print_status()
+                break
+        else:
+            print("You need to enter y or n...")
+            print()
+
+    return fight
+
+# Combat routine, return a flag indicating
+def combat(player, monster):
+
+    print("COMBAT!")
+
+    while player.hp > 0 and monster.hp > 0:
+        print()
+        print("Player HP:", player.hp, " <---> Monster HP:", monster.hp)
+        print()
+
+        playerAttackPoints = 5
+
+        if player.weapon is None:
+            print("You're in trouble... You only have fists of pudding!")
+            monster.hp = monster.hp - playerAttackPoints
+        else:
+            playerAttackPoints = player.weapon.attackDamage
+            print("Players weapon", player.describe_weapon(), " attack ", playerAttackPoints)
+
+    if player.hp > 0:
+        print("You have won!")
+    elif monster.hp > 0:
+        print("The monster has won!")
+
+
+
+
+
+
 
 # Print a kick butt intro, lol
 def printIntro():
@@ -103,14 +158,26 @@ def main():
         print("********************")
         print()
         room.describe_room()
-        if room.monster != None:
+        if room.monster == None:
+            print("Phew, no monsters here...")
+        else:
             print("Eeek!!! A monster!")
             print()
             room.monster.describe_monster()
             print()
+            if fightCheck(player):
+                combat(player, room.monster)
+            elif player.hp > 0:
+                print()
+                print("You've avoided combat for now, but have taken a hit... ")
+                print("You now have", player.hp, "HP.  What do you want to do?")
+                print()
+
         print()
         print("********************")
         print()
+
+        #hp check - continue or dead
 
         commandChoice = input("Enter a command (h for help) --> ").lower()
         commandList = commandChoice.split()
