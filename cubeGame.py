@@ -61,34 +61,54 @@ def fightCheck(player):
 
     return fight
 
-# Combat routine, return a flag indicating
+
+# Combat routine, return a flag indicating win or lose
 def combat(player, monster):
 
     print("COMBAT!")
+    victoryFlag = False
+
+    # Default Attack points if no weapon equipped
+    playerDefaultAttackPoints = 5
 
     while player.hp > 0 and monster.hp > 0:
         print()
         print("Player HP:", player.hp, " <---> Monster HP:", monster.hp)
         print()
 
-        playerAttackPoints = 5
+        playerAttackChance = random.randint(1, 10)
+        monsterAttackChance = random.randint(1, 10)
 
+        # Player Attacks First
         if player.weapon is None:
             print("You're in trouble... You only have fists of pudding!")
+            monster.hp = monster.hp - playerDefaultAttackPoints
+        elif playerAttackChance < 7:
+
+            playerAttackPoints = player.get_weapon_attack_hp()
             monster.hp = monster.hp - playerAttackPoints
+
+            print("The player attacked with", player.weapon.name, "which has an attack damage of", playerAttackPoints)
         else:
-            playerAttackPoints = player.weapon.attackDamage
-            print("Players weapon", player.describe_weapon(), " attack ", playerAttackPoints)
+            print("The players attack missed!")
+
+        # Now its the monsters turn!
+        if monster.hp > 0:
+            if monsterAttackChance < 7:
+                print("The monster attacked with", monster.attack, "which has an attack damage of", monster.attackDamage)
+                player.hp = player.hp - monster.attackDamage
+            else:
+                print("The monsters attack missed!")
+
+        input("Press <ENTER> to continue the fight!!!")
 
     if player.hp > 0:
         print("You have won!")
+        victoryFlag = True
     elif monster.hp > 0:
         print("The monster has won!")
 
-
-
-
-
+    return victoryFlag
 
 
 # Print a kick butt intro, lol
@@ -166,7 +186,12 @@ def main():
             room.monster.describe_monster()
             print()
             if fightCheck(player):
-                combat(player, room.monster)
+                if combat(player, room.monster):
+                    # What to do if we win
+                    room.monster = None
+                else:
+                    # What to do if we've lost
+                    break
             elif player.hp > 0:
                 print()
                 print("You've avoided combat for now, but have taken a hit... ")

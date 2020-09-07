@@ -21,8 +21,11 @@ class Player:
     def equip_weapon(self, item):
         for playerItem in self.inventory:
             if playerItem.name.lower() == item:
-                self.weapon = item
-                print("Player has equipped ", self.weapon)
+                self.weapon = playerItem
+                print("Player has equipped", self.weapon.name)
+
+    def get_weapon_attack_hp(self):
+        return self.weapon.attackDamage
 
     # Print players inventory
     def print_inventory(self):
@@ -36,7 +39,7 @@ class Player:
 
     def describe_weapon(self):
         if self.weapon is not None:
-            print("Player is currently using ", self.weapon)
+            print("Player is currently using", self.weapon.name)
 
     # Display current status - pretty style!
     def print_status(self):
