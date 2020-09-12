@@ -11,6 +11,8 @@ class Room:
         self.movesDict = room.get("moves")
         self.itemsList = []
         self.monster = None
+        self.event = room.get("event")
+        self.eventDescription = room.get("eventDescription")
 
     # Describe room
     def describe_room(self):
@@ -20,6 +22,28 @@ class Room:
             print("You see the following items :")
             for item in self.itemsList:
                 print(item.name)
+
+    def printDebug(self):
+        print("***********************")
+        print("Room Number:", self.roomNumber)
+        print("Description:", self.description)
+        print("Moves Dictionary:", self.movesDict)
+        if len(self.itemsList) > 0:
+            print("Items List:")
+            for item in self.itemsList:
+                print("\t-->", item.name)
+        else:
+            print("Items: No items present")
+        if self.monster is not None:
+            print("Monster:", self.monster.name)
+            print("\t-->", self.monster.description)
+        else:
+            print("Monster: No monster present")
+        print("Event:", self.event)
+        print("Event Description:", self.eventDescription)
+        print()
+
+
 
     # Place an item in the room
     def place_item(self, item):

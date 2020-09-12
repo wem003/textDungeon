@@ -53,7 +53,9 @@
         "s": "3",
         "sw": "0",
         "w": "0",
-        "nw": "0"
+        "nw": "0",
+        "up": "0",
+        "down": "0"
       },
       "items": "",
       "monster": "",
@@ -62,7 +64,7 @@
     },
     {
       "id": "2",
-      "description": "This is room two. This is the second best room.",
+      "description": "This is room two. It's the second best room, or the first loser room.",
       "moves": {
         "n": "0",
         "ne": "5",
@@ -71,7 +73,9 @@
         "s": "4",
         "sw": "0",
         "w": "1",
-        "nw": "0"
+        "nw": "0",
+        "up": "0",
+        "down": "0"
       },
       "items": "",
       "monster": "",
@@ -85,11 +89,13 @@
         "n": "1",
         "ne": "0",
         "e": "4",
-        "se": "0",
-        "s": "0",
+        "se": "8",
+        "s": "6",
         "sw": "0",
         "w": "0",
-        "nw": "0"
+        "nw": "0",
+        "up": "0",
+        "down": "0"
       },
       "items": "",
       "monster": "",
@@ -104,10 +110,12 @@
         "ne": "0",
         "e": "0",
         "se": "0",
-        "s": "0",
-        "sw": "0",
+        "s": "7",
+        "sw": "8",
         "w": "3",
-        "nw": "0"
+        "nw": "0",
+        "up": "0",
+        "down": "0"
       },
       "items": "",
       "monster": "",
@@ -116,7 +124,7 @@
     },
     {
       "id": "5",
-      "description": "This is room five.",
+      "description": "This is room five. There is a ladder that goes up.",
       "moves": {
         "n": "0",
         "ne": "0",
@@ -125,12 +133,153 @@
         "s": "0",
         "sw": "2",
         "w": "0",
-        "nw": "0"
+        "nw": "0",
+        "up": "10",
+        "down": "0"
       },
       "items": "",
       "monster": "",
       "event": "",
       "eventDescription": ""
+    },
+    {
+      "id": "6",
+      "description": "This is room six.",
+      "moves": {
+        "n": "3",
+        "ne": "8",
+        "e": "7",
+        "se": "0",
+        "s": "0",
+        "sw": "0",
+        "w": "0",
+        "nw": "0",
+        "up": "0",
+        "down": "0"
+      },
+      "items": "",
+      "monster": "",
+      "event": "",
+      "eventDescription": ""
+    },
+    {
+      "id": "7",
+      "description": "This is room seven.",
+      "moves": {
+        "n": "4",
+        "ne": "0",
+        "e": "0",
+        "se": "0",
+        "s": "0",
+        "sw": "0",
+        "w": "6",
+        "nw": "8",
+        "up": "0",
+        "down": "0"
+      },
+      "items": "",
+      "monster": "",
+      "event": "",
+      "eventDescription": ""
+    },
+    {
+      "id": "8",
+      "description": "This is room eight. There is a ladder that goes down.",
+      "moves": {
+        "n": "0",
+        "ne": "4",
+        "e": "0",
+        "se": "7",
+        "s": "0",
+        "sw": "6",
+        "w": "0",
+        "nw": "3",
+        "up": "0",
+        "down": "9"
+      },
+      "items": "",
+      "monster": "",
+      "event": "",
+      "eventDescription": ""
+    },
+    {
+      "id": "9",
+      "description": "This is room nine. There is a ladder that goes up.",
+      "moves": {
+        "n": "0",
+        "ne": "0",
+        "e": "0",
+        "se": "0",
+        "s": "11",
+        "sw": "0",
+        "w": "0",
+        "nw": "0",
+        "up": "8",
+        "down": "0"
+      },
+      "items": "",
+      "monster": "",
+      "event": "",
+      "eventDescription": ""
+    },
+    {
+      "id": "10",
+      "description": "This is room ten.",
+      "moves": {
+        "n": "12",
+        "ne": "0",
+        "e": "0",
+        "se": "0",
+        "s": "0",
+        "sw": "0",
+        "w": "0",
+        "nw": "0",
+        "up": "0",
+        "down": "5"
+      },
+      "items": "",
+      "monster": "",
+      "event": "",
+      "eventDescription": ""
+    },
+    {
+      "id": "11",
+      "description": "This is room eleven.",
+      "moves": {
+        "n": "9",
+        "ne": "0",
+        "e": "0",
+        "se": "0",
+        "s": "0",
+        "sw": "0",
+        "w": "0",
+        "nw": "0",
+        "up": "0",
+        "down": "0"
+      },
+      "items": "",
+      "monster": "",
+      "event": "badWin",
+      "eventDescription": "You have won, but at what cost?  You are a shell of a person, a greedy husk."
+    },
+    {
+      "id": "12",
+      "description": "This is room twelve.",
+      "moves": {
+        "n": "0",
+        "ne": "0",
+        "e": "0",
+        "se": "0",
+        "s": "10",
+        "sw": "0",
+        "w": "0",
+        "nw": "0",
+        "up": "0",
+        "down": "0"
+      },
+      "items": "",
+      "monster": "",
+      "event": "goodWin",
+      "eventDescription": "You have won!  The children in the village will rejoice, the sick will be healed \nand it will never rain on birthdays again!"
     }
-  ]
-}
+  ]}

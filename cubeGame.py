@@ -5,10 +5,26 @@ from classData.player import Player
 from classData.monster import Monster
 from classData.item import Item
 
+# from this article - https://stackoverflow.com/questions/22885780/python-clear-the-screen
+from platform import system as system_name  # Returns the system/OS name
+from subprocess import call as system_call  # Execute a shell command
+
 # Define some global vars
 roomsList = []
 monstersList = []
 itemList = []
+
+
+def clear_screen():
+    """
+    Clears the terminal screen.
+    """
+
+    # Clear screen command as function of OS
+    command = 'cls' if system_name().lower() == 'windows' else 'clear'
+
+    # Action
+    system_call([command])
 
 
 # Game initialization
@@ -19,25 +35,47 @@ def game_init():
 
     # First lets place items.  Items can go in any room
     for item in itemList:
-        randomRoom = random.randint(0, roomCount - 1)
-        currentRoom = roomsList[randomRoom]
-        currentRoom.place_item(item)
-        roomsList[randomRoom] = currentRoom
+
+        itemPlaced = False
+
+        while not itemPlaced:
+            randomRoom = random.randint(0, roomCount - 1)
+            currentRoom = roomsList[randomRoom]
+
+            # We don't want to place items in the 'win' rooms
+            if currentRoom.event != "goodWin" and currentRoom.event != "badWin":
+                currentRoom.place_item(item)
+                roomsList[randomRoom] = currentRoom
+                itemPlaced = True
 
     # Now lets place monsters
     for monster in monstersList:
-        # We don't want monsters in the start room, so start at index 1 instead of 0
-        randomRoom = random.randint(1, roomCount - 1)
-        currentRoom = roomsList[randomRoom]
 
-        # In this game, only one monster per room
-        if currentRoom.monster is None:
-            currentRoom.place_monster(monster)
-            roomsList[randomRoom] = currentRoom
+        monsterPlaced = False
+
+        while not monsterPlaced:
+            # We don't want monsters in the start room, so start at index 1 instead of 0
+            randomRoom = random.randint(1, roomCount - 1)
+            currentRoom = roomsList[randomRoom]
+
+            # We don't want to place monsters in the 'win' rooms
+            if currentRoom.event != "goodWin" and currentRoom.event != "badWin":
+                # In this game, only one monster per room
+                if currentRoom.monster is None:
+                    currentRoom.place_monster(monster)
+                    roomsList[randomRoom] = currentRoom
+                    monsterPlaced = True
+
+
+# Debug method, we are going to print out diagnostics to help us test the
+# dungeon layout without having to play it
+def debug():
+    for room in roomsList:
+        room.printDebug()
+
 
 # Return true if fighting
 def fightCheck(player):
-
     fight = False
     commandChoice = input("You've encountered a monster - do you want to fight? (y or n) --> ").lower()
 
@@ -64,7 +102,6 @@ def fightCheck(player):
 
 # Combat routine, return a flag indicating win or lose
 def combat(player, monster):
-
     print("COMBAT!")
     victoryFlag = False
 
@@ -95,7 +132,8 @@ def combat(player, monster):
         # Now its the monsters turn!
         if monster.hp > 0:
             if monsterAttackChance < 7:
-                print("The monster attacked with", monster.attack, "which has an attack damage of", monster.attackDamage)
+                print("The monster attacked with", monster.attack, "which has an attack damage of",
+                      monster.attackDamage)
                 player.hp = player.hp - monster.attackDamage
             else:
                 print("The monsters attack missed!")
@@ -139,7 +177,8 @@ def main():
     currentRoom = "1"
     currentRoomIndex = int(currentRoom) - 1
     continueGame = ""
-    validMoves = ["n", "ne", "e", "se", "s", "sw", "w", "nw"]
+    validMoves = ["n", "ne", "e", "se", "s", "sw", "w", "nw", "up", "down"]
+    clearScreen = False
 
     # Open our game json
     with open('./gameData/cube2.json') as data_file:
@@ -174,11 +213,20 @@ def main():
     # Game loop
     while continueGame != "exit":
 
+        if clearScreen:
+            clear_screen()
+
         room = roomsList[currentRoomIndex]
+
+        # If we've won, print the eventDescription and break from the while loop
+        if room.event == "goodWin" or room.event == "badWin":
+            print(room.eventDescription)
+            break
+
         print("********************")
         print()
         room.describe_room()
-        if room.monster == None:
+        if room.monster is None:
             print("Phew, no monsters here...")
         else:
             print("Eeek!!! A monster!")
@@ -202,7 +250,7 @@ def main():
         print("********************")
         print()
 
-        #hp check - continue or dead
+        # hp check - continue or dead
 
         commandChoice = input("Enter a command (h for help) --> ").lower()
         commandList = commandChoice.split()
@@ -212,7 +260,7 @@ def main():
             nextRoomNumber = room.get_next_room(commandChoice)
             if nextRoomNumber != "0":
                 currentRoomIndex = int(nextRoomNumber) - 1
-                print()
+                clear_screen()
             else:
                 room.badMoveMessage()
 
@@ -245,6 +293,8 @@ def main():
             player.print_inventory()
         elif commandChoice.lower() == "status":
             player.print_status()
+        elif commandChoice.lower() == "debug":
+            debug()
         elif commandChoice.lower() == "exit":
             # we are quitting
             break
