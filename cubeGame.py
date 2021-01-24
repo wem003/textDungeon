@@ -1,9 +1,12 @@
 import json
 import random
+
+from classData import asciiArt
 from classData.room import Room
 from classData.player import Player
 from classData.monster import Monster
 from classData.item import Item
+
 
 # from this article - https://stackoverflow.com/questions/22885780/python-clear-the-screen
 from platform import system as system_name  # Returns the system/OS name
@@ -153,7 +156,9 @@ def combat(player, monster):
 
 # Print a kick butt intro, lol
 def printIntro():
-    print("Welcome to the mini dungeon, type exit to quit...")
+    clear_screen()
+    asciiArt.print_title()
+    clear_screen()
 
 
 # Print command options
