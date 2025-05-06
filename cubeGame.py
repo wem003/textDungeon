@@ -149,7 +149,10 @@ def combat(player, monster):
         print("You have won!")
         victoryFlag = True
     elif monster.hp > 0:
+        asciiArt.print_death()
+        print("")
         print("The monster has won!")
+        exit()
 
     return victoryFlag
 
